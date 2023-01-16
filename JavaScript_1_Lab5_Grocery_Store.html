@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>		
+	
+	<div>
+		<body style="background-color: grey; max-width: 30%;">
+			<h1>Grocery Store</h1>
+			
+			<hr>
+			
+			<!-- Department Selection Area -->
+			<h3>Department</h3>
+			<div id="radioButtons" style="border: 1px solid black; padding: 5px; background-color: #ffffff;">
+				<p>
+					<input type="radio" id="rbProduce" name="department" onclick="displayProducts();" value="produce" checked>
+					Produce
+				</p>
+				<p>
+					<input type="radio" id="rbBakery" name="department" onclick="displayProducts();" value="bakery">
+					Bakery
+				</p>
+				<p>
+					<input type="radio" id="rbMeat" name="department" onclick="displayProducts();" value="meats">
+					Meats
+				</p>
+				<p>
+					<input type="radio" id="rbCheese" name="department" onclick="displayProducts();" value="cheese">
+					Cheese
+				</p>
+				
+			</div>
+			
+			<hr>
+			
+			<!-- Product Output Area -->
+			<h3>Products Available</h3>
+			<div id="productOutput" style="border: 1px solid black; padding: 5px; background-color: #ffffff;">[Select a Department]</div>
+			
+			<!-- Add Product to Department -->
+			<p>Add Product:
+				<input type="text" id="product">
+				<input type="button" value="Add Product" onclick="addProduct();">
+			</p>
+			
+			<hr>
+			
+			<!-- Product Selection Field -->
+			<h3>Shopping Cart</h3>
+			
+			<p>Add Item #
+				<select id="itemNumDropdown"><option selected disabled value=null>00</option></select>
+				to Cart:
+				<input type="button" value="Add to Cart" onclick="addItemToCart();">
+			</p>
+			
+			<!-- Product Output Area -->
+			<div id="cartOutput" style="border: 1px solid black; padding: 5px; background-color: #ffffff;">[Add an Item to Cart]</div>
+			
+			<!-- Javascript -->
+			<script>			
+				
+				/*
+					Global Scope
+				*/
+
+				var aProduceItems = ["Apples", "Bananas", "Mangos", "Grapes", "Pears", "Brocolli"];
+				var aBakeryItems = ["Baguette", "Pumpkin Pie", "Chocolate Cookies"];
+				var aMeatItems = ["Beef", "Chicken", "Ham", "Turkey"];
+				var aCheeseItems = ["Cheddar", "Swiss", "Gouda", "Havarti", "Asiago"];
+				
+				var aShoppingCart = [];
+				
+				/*
+					Event Listener Functions
+				*/
+
+				/*  
+					displayProducts() 
+					
+					Purpose: When Department Radio button is clicked, display items from that department to "Products Available" text field
+					Parameters: None
+					Returns: None
+				*/
+				
+				function displayProducts() 
+				{
+					var selectedDept = document.querySelector("input[name='department']:checked").value;
+
+					if (selectedDept == "produce")
+					{
+						document.getElementById("productOutput").innerHTML = aProduceItems.join(", ");
+						changeItemDropdown(aProduceItems.length);
+					}
+					
+					else if (selectedDept == "bakery")
+					{
+						document.getElementById("productOutput").innerHTML = aBakeryItems.join(", ");
+						changeItemDropdown(aBakeryItems.length);
+					}
+					
+					else if (selectedDept == "meats")
+					{
+						document.getElementById("productOutput").innerHTML = aMeatItems.join(", ");
+						changeItemDropdown(aMeatItems.length);
+					}
+
+					else if (selectedDept == "cheese")
+					{
+						document.getElementById("productOutput").innerHTML = aCheeseItems.join(", ");
+						changeItemDropdown(aCheeseItems.length);
+					}
+				}
+
+				/*  
+					addProduct()
+					
+					Purpose: Add NEW product that is entered into the "Add Product Field" to existing "Products Available" text field
+					Parameters: None
+					Returns: None
+				*/
+
+				function addProduct()
+				{
+					var selectedDept = document.querySelector("input[name='department']:checked").value;
+
+					if (selectedDept == "produce")
+					{
+						var itemInProductField = document.getElementById("product").value;
+						aProduceItems.push(itemInProductField);
+						document.getElementById("product").value = "";
+						displayProducts();
+					}
+
+					else if (selectedDept == "bakery")
+					{
+						var itemInProductField = document.getElementById("product").value;
+						aBakeryItems.push(itemInProductField);
+						document.getElementById("product").value = "";
+						displayProducts();
+					}
+
+					else if (selectedDept == "meats")
+					{
+						var itemInProductField = document.getElementById("product").value;
+						aMeatItems.push(itemInProductField);
+						document.getElementById("product").value = "";
+						displayProducts();
+					}
+
+					else if (selectedDept == "cheese")
+					{
+						var itemInProductField = document.getElementById("product").value;
+						aCheeseItems.push(itemInProductField);
+						document.getElementById("product").value = "";
+						displayProducts();
+					}	
+				}
+
+				/*
+					addItemToCart()
+
+					Purpose: Add specific item from Selected Department via Drop Down Menu to "Shopping Cart" text field
+					Parameters: None
+					Returns: None
+				*/
+
+				function addItemToCart()
+				{
+					var selectedDept = document.querySelector("input[name='department']:checked").value;
+
+					if (selectedDept == "produce")
+					{
+						var dropDownValue = document.getElementById("itemNumDropdown").value;
+						aShoppingCart.push(aProduceItems[dropDownValue - 1]);
+						document.getElementById("cartOutput").innerHTML = aShoppingCart.join(", ");
+					}
+
+					else if (selectedDept == "bakery")
+					{
+						var dropDownValue = document.getElementById("itemNumDropdown").value;
+						aShoppingCart.push(aBakeryItems[dropDownValue - 1]);
+						document.getElementById("cartOutput").innerHTML = aShoppingCart.join(", ");
+					}
+
+					else if (selectedDept == "meats")
+					{
+						var dropDownValue = document.getElementById("itemNumDropdown").value;
+						aShoppingCart.push(aMeatItems[dropDownValue - 1]);
+						document.getElementById("cartOutput").innerHTML = aShoppingCart.join(", ");
+					}
+
+					else if (selectedDept == "cheese")
+					{
+						var dropDownValue = document.getElementById("itemNumDropdown").value;
+						aShoppingCart.push(aCheeseItems[dropDownValue - 1]);
+						document.getElementById("cartOutput").innerHTML = aShoppingCart.join(", ");
+					}
+				}
+			
+				/*
+					changeItemDropdown()
+					Purpose: Populate the dropdown with numbers from 1 to maxNumber
+					Parameters: maxNumber 
+					Returns: Nothing
+				*/
+				
+				function changeItemDropdown(maxNumber) {
+					// Validate maxNumber
+					if(maxNumber > 1)
+					{
+						// Get Dropdown Element
+						var dropDown = document.getElementById("itemNumDropdown");
+						
+						// Empty Dropdown
+						dropDown.innerHTML = "";
+						
+						// Create default option 00
+						var defaultOption = document.createElement("option"); 
+						defaultOption.innerHTML = "00";
+						defaultOption.value = null;	
+						defaultOption.disabled = true;
+						defaultOption.selected = true;
+						dropDown.appendChild(defaultOption);
+						
+						// Add options to dropDown
+						for (var x = 1; x <= maxNumber; x++)
+						{
+							var tempElement = document.createElement("option"); 					
+							tempElement.innerHTML = x;
+							tempElement.value = x;					
+							dropDown.appendChild(tempElement);		
+						}
+						
+						console.log("Dropdown updated!");
+						
+					} // end if
+					else
+					{
+						console.log("Dropdown not updated!");
+					}
+				} 
+			
+			</script>
+		</body>
+	</div>
+</html>	
